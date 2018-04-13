@@ -18,6 +18,30 @@ struct gameState* newGame() {
   return g;
 }
 
+//*** Deleonp refactoring Section ***
+int implementSmithy(struct gameState *state, int handPos)
+{
+	int currentPlayer = whoseTurn(state);
+	int numCards	  = 3; //number of cards that may be drawn
+	int i;
+	
+	for (i = 0; i < numCards; i++)
+	{
+		drawCard(currentPlayer, state);
+	}
+	
+	//discard card from Hand
+	discardCard(handPos, currentPlayer, state,0);
+	
+	return 0;
+}
+
+int implementAdventurer()
+{
+	return 0;
+}
+//*** End of refactoring ***
+
 int* kingdomCards(int k1, int k2, int k3, int k4, int k5, int k6, int k7,
 		  int k8, int k9, int k10) {
   int* k = malloc(10 * sizeof(int));
@@ -829,15 +853,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case smithy:
-      //+3 Cards
-      for (i = 0; i < 3; i++)
-	{
-	  drawCard(currentPlayer, state);
-	}
-			
-      //discard card from hand
-      discardCard(handPos, currentPlayer, state, 0);
-      return 0;
+      return implementSmithy(state,handPos);
 		
     case village:
       //+1 Card
@@ -1329,5 +1345,6 @@ int updateCoins(int player, struct gameState *state, int bonus)
 }
 
 
-//end of dominion.c
+//end of standard dominion.c
+
 
