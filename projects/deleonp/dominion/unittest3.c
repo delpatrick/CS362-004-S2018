@@ -19,21 +19,35 @@
 
 
 int main(){
-	struct gameState *statePre;
-	struct gameState *statePost;
+	struct gameState state;
 	
-	int r,i,n;
+	int r = -5;
+	int i;
+	int n;
 	int k[10] = {adventurer, council_room, feast, gardens,
 		mine,remodel, smithy, village, baron, great_hall};
-	
-	statePre->numPlayers = 1;
 		
-	if (statePre->deckCount[0] > 0)
+	state.numPlayers = 1;
+	
+	for (i =0; i < MAX_CARDS; i++)
 	{
-		statePre->deck[1][i] = k[i];
-		statePre->deckCount[1]++;
+		state.deck[1][i] = k[i];
+		state.deckCount[1]++;
 	}
-	memcpy(&statePost,&statePre, sizeof(struct gameState));
-	r = shuffle(1,statePost);
-	assert(memcmp(&statePre,&statePost, sizeof(struct gameState)) == 0);
+	
+	r = shuffle(1,&state);
+	 
+	assert(r == 0);
+	
+	//Check that the cards are not in the same place
+	//Select three cards at random
+	for (i = 0; i < 3; i++)
+	{
+		n = floor(Random() * MAX_CARDS);
+		assert(state.deck[1][n] != k[n]); 
+	}
+	
+	printf("Test passed...");
+	
+	return 0;
 }

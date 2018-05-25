@@ -19,25 +19,26 @@
 
 
 int main(){
-	struct gameState *state;
+	struct gameState state;
 	
-	int r,i,n;
-	int k[10] = {adventurer, council_room, feast, gardens,
-		mine,remodel, smithy, village, baron, great_hall};
-	int c[MAX_CARDS];
+	int r,i,pc[MAX_CARDS];
 	
-	state->numPlayers = 1;
+	state.numPlayers = 1;
 	
 	for (i =0; i < MAX_CARDS; i++)
 	{
-		state->hand[1][i] = k[i];
-		state->handCount[1]++;
+		pc[i] = floor(Random() * 26);
+		state.hand[0][i] = pc[i];
+		state.handCount[0]++;
 	}
 	
-	for (i=0; k[i]!=0; i++)
+	for (i=0; i < MAX_CARDS; i++)
 	{
-		r = handCard(i,state);
-		assert((k[r]==k[i])==0);
+		r = handCard(i,&state);
+		assert(r == pc[i]);
 	}
 	
+	printf("Test passed...");
+	
+	return 0;
 }

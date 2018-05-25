@@ -39,7 +39,10 @@ int main(){
 	for (i=0; k[i]!=0; i++)
 	{
 		r = fullDeckCount(1,i,&state);
-		assert((r==c[i])==0);
+		assert(r==c[i]);
 	}
 	
+	printf("Test passed...");
+	
+	return 0;
 }
