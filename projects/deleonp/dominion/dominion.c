@@ -31,7 +31,7 @@ int playSmithy(struct gameState *state, int handPos)
 	}
 	
 	//discard card from Hand
-	discardCard(handPos, currentPlayer, state,0);  //**** Bug added - card added to trash rather than discard
+	discardCard(handPos, currentPlayer, state,1);  //**** Bug added - card added to trash rather than discard
 	
 	return 0;
 }

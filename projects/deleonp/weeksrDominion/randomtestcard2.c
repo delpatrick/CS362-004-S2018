@@ -12,18 +12,21 @@
 //from the deck, increase the number of actions taken by 2 and discard the village
 //card. The hand is populated with at least 1 village card at the hand position
 //passed in. Test will only test the village card at that position.
-int checkplayVillage(int p, int handPos, struct gameState *post) {
+int checkplayVillage(int p, int handPos, struct gameState *post,int n) {
   int r;
   struct gameState pre;
   
   memcpy(&pre, post, sizeof(struct gameState));
     
-  r = playVillage(post, handPos);
+  r = playVillage(p,post, handPos);
 
   assert (r == 0);
   
   //Pre count + 1 card - 1 played
-  assert(pre.handCount[p] == post->handCount[p]); 
+  //assert(pre.handCount[p] == post->handCount[p]); 
+  if (pre.handCount[p] != post->handCount[p]){
+	  printf("Failed HandCount (%d): pre - %d, post - %d \n",n,pre.handCount[p],post->handCount[p]);
+  }
   //Village removed from hand at handpos, as long as the card after was not also a Village
   if (handPos < pre.handCount && pre.hand[p][handPos+1] != village){
 	  assert(post->hand[p][handPos] != village);
@@ -88,7 +91,7 @@ int main () {
 	G.hand[p][i]=-1;
      
     
-    r = checkplayVillage(p,handPos,&G);
+    r = checkplayVillage(p,handPos,&G,n);
 	
 	assert (r == 0);
   }

@@ -11,17 +11,32 @@
 //The basic functionality of the Adventurer card is to allow the player to draw cards
 //from the deck until two treasury cards were drawn. The drawn cards, that were not treasure cards,
 //were placed in the discard pile.
-int checkplayAdventurer(int p,int handCnt, int tresMulti, struct gameState *post) {
+int checkplayAdventurer(int p,int handCnt, int tresMulti, struct gameState *post, int n) {
   int r;
   struct gameState pre;
+  //Added for weeksr testing
+  int drawnTreasure  = 0;
+  int cardDrawn = 0;
+  int temphand[MAX_HAND];
+  int z = 0; 
   
   memcpy(&pre, post, sizeof(struct gameState));
     
-  r = playAdventurer(post);
+  r = playAdventurer(drawnTreasure,p,cardDrawn,temphand,z,post,0);
 
   assert (r == 0);
-  assert (pre.handCount[p] == (post->handCount[p] - 2)); //Pre count + 2 Treasury cards
-  assert((pre.discardCount[p]+pre.deckCount[p]) == (post->discardCount[p] + (post->deckCount[p] + 2)));
+  //replace assert for easier output
+  if (pre.handCount[p] != (post->handCount[p] - 1))//Pre count + 2 Treasury cards - discard
+  {
+	  printf("Failed HandCount (%d): pre - %d, post - %d \n",n,pre.handCount[p],post->handCount[p]);
+  }
+  
+  if ((pre.discardCount[p]+pre.deckCount[p]) != (post->discardCount[p] + (post->deckCount[p] + 2)))
+  {
+	  printf("Failed discard/deck count (%d): pre - %d, post - %d \n",n,
+			(pre.discardCount[p]+pre.deckCount[p]), 
+			(post->discardCount[p] + (post->deckCount[p] + 2)));
+  }
   
   return 0;
 }
@@ -76,6 +91,10 @@ int main () {
 	G.discardCount[p] = discardCount;
 	G.handCount[p] = handCount;
 	
+	//added for weeksr testing
+	G.hand[p][0] = adventurer;
+	G.playedCardCount = 0;
+	
 	//Fill decks
 	if (deckCount >= (t*2)){
 		//populate the deck with random cards with each 't' card as a treasury card
@@ -124,7 +143,7 @@ int main () {
 	}
      
     
-    r = checkplayAdventurer(p,handCount,t,&G);
+    r = checkplayAdventurer(p,handCount,t,&G, n);
 	
 	assert (r == 0);
   }

@@ -12,18 +12,21 @@
 //from the deck and discard the smithy card. The hand is populated with at least 1 
 //Smithy card at the hand position passed in. Test will only test the smithy card at
 //at that position.
-int checkplaySmithy(int p, int handPos, struct gameState *post) {
+int checkplaySmithy(int p, int handPos, struct gameState *post, int n) {
   int r;
   struct gameState pre;
   
   memcpy(&pre, post, sizeof(struct gameState));
     
-  r = playSmithy(post, handPos);
+  r = playSmithy(p, post, handPos,0);
 
   assert (r == 0);
   
   //Pre count + 3 cards - 1 discard
-  assert (pre.handCount[p] == (post->handCount[p] - 2)); 
+  //assert (pre.handCount[p] == (post->handCount[p] - 2));
+  if (pre.handCount[p] == (post->handCount[p] - 2)){
+	  printf("Failed HandCount (%d): pre - %d, post - %d \n",n,pre.handCount[p],post->handCount[p]);
+  }
   //Smithy removed from hand at handpos, as long as the card after was not also a smithy
   if (handPos != pre.handCount && pre.hand[p][handPos+1] != smithy){
 	  assert (post->hand[p][handPos] != smithy);
@@ -88,7 +91,7 @@ int main () {
 	G.hand[p][i]=-1;
      
     
-    r = checkplaySmithy(p,handPos,&G);
+    r = checkplaySmithy(p,handPos,&G,n);
 	
 	assert (r == 0);
   }

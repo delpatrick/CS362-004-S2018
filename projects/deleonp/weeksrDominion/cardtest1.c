@@ -43,7 +43,7 @@ int main(){
 	r = cardEffect(smithy, 1,2,3,&state,state.handCount[0],&n);
 	
 	//Pre count + 3 cards
-	assert(pre.handCount[0] == (state.handCount[0] - 3));
+	assert(pre.handCount[0] == (state.handCount[0] - 2));
 	assert(pre.playedCardCount == (state.playedCardCount - 1));
 	
 	return 0;
