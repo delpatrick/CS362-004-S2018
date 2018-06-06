@@ -12,7 +12,19 @@ import junit.framework.TestCase;
 
 
 public class UrlValidatorTest extends TestCase {
-
+	
+	String[] scheme = {"http","https","imap","ftp","ssh"};
+	
+	String[] authority = {"en:wikipedia.org", "en.wikipedia.org", "wikipedia.org", "", null, "pmtpa.wikimedia.org",
+			"_.wikipedia.org", "0.wikipedia.org", "-en.wikipedia.org", " ",
+			"en..wikipedia.org", "192.0.2.235", "0.0.0.0", "192.0.2.256",
+			"255.255.255.255", "255.256.255.254", "2555.255.255.2",
+			"en.abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmno.org",
+			"en.abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnop.org",
+			"en/.wikipedia.org", "0wikipedia.org", "-wikipedia.org", "en.wiki pedia.org", 
+			"2001:db8:a0b:12f0::1", "2001:db8:0:0:0:0:2:1", "2001:db8::2:1"};
+	
+	String[] path = {"/test1", "/t123", "/$23", "/..", "/../", "/test1/", ""};
 
    public UrlValidatorTest(String testName) {
       super(testName);
@@ -20,29 +32,29 @@ public class UrlValidatorTest extends TestCase {
 
    
    
-   public void testManualTest()
-   {
-	   String[] schemes = {"http","https","imap","ftp","ssh"};
-	   String	urlStr;
-	   
-	   Scanner  userIn = new Scanner(System.in); 	   
-	   UrlValidator urlValidator = new UrlValidator(schemes);
-	   
-	   while (true) {
-		   urlStr = userIn.nextLine();
-		   
-		   if (urlStr == "")
-			   break;
-		   
-		   if (urlValidator.isValid(urlStr)) {
-			   System.out.println("url is valid");
-		   } else {
-			   System.out.println("url is invalid");
-		   }   
-	   }
-	   System.out.println("Exiting Test");
-	   userIn.close(); 
-   }
+//   public void testManualTest()
+//   {
+//	   String[] schemes = {"http","https","imap","ftp","ssh"};
+//	   String	urlStr;
+//	   
+//	   Scanner  userIn = new Scanner(System.in); 	   
+//	   UrlValidator urlValidator = new UrlValidator(schemes);
+//	   
+//	   while (true) {
+//		   urlStr = userIn.nextLine();
+//		   
+//		   if (urlStr == "")
+//			   break;
+//		   
+//		   if (urlValidator.isValid(urlStr)) {
+//			   System.out.println("url is valid");
+//		   } else {
+//			   System.out.println("url is invalid");
+//		   }   
+//	   }
+//	   System.out.println("Exiting Test");
+//	   userIn.close(); 
+//   }
    
    
    public void testYourFirstPartition()
@@ -51,40 +63,46 @@ public class UrlValidatorTest extends TestCase {
 
    }
    
-   public void testYourSecondPartition(){
-
-	   String[] scheme = {"http","https","imap","ftp","ssh"};
-
-	   UrlValidator urlValidator = new UrlValidator(scheme);
-
-	   String[] authority = {"en:wikipedia.org", "en.wikipedia.org", "wikipedia.org", "", null, "pmtpa.wikimedia.org",
-				"_.wikipedia.org", "0.wikipedia.org", "-en.wikipedia.org", " ",
-				"en..wikipedia.org", "192.0.2.235", "0.0.0.0", "192.0.2.256",
-				"255.255.255.255", "255.256.255.254", "2555.255.255.2",
-				"en.abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmno.org",
-				"en.abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnop.org",
-				"en/.wikipedia.org", "0wikipedia.org", "-wikipedia.org", "en.wiki pedia.org", 
-				"2001:db8:a0b:12f0::1", "2001:db8:0:0:0:0:2:1", "2001:db8::2:1"};
-	   
-	   for(int j = 0; j < scheme.length; j++) {
-		   for(int i = 0; i < authority.length; i++) {
-			   String testURL = scheme[j] + "://" + authority[i];
-			   if (urlValidator.isValid(testURL)) {
-				   System.out.printf("the url %s with authority %s is valid\n", testURL, authority[i]);
-			   } else {
-				   System.out.printf("the url %s with authority %s is invalid\n", testURL, authority[i]);
-			   }
-		   }
-	   }
-
-
-   }
+//   public void testYourSecondPartition(){
+//
+//	   String[] schemes = {"http","https","imap","ftp","ssh"};
+//
+//	   UrlValidator urlValidator = new UrlValidator(schemes);
+//
+//	   
+//	   for(int j = 1; j < scheme.length; j++) {
+//		   for(int i = 0; i < authority.length; i++) {
+//			   String testURL = scheme[j] + "://" + authority[i];
+//			   if (urlValidator.isValid(testURL)) {
+//				   System.out.printf("the url %s with authority %s is valid\n", testURL, authority[i]);
+//			   } else {
+//				   System.out.printf("the url %s with authority %s is invalid\n", testURL, authority[i]);
+//			   }
+//		   }
+//	   }
+//
+//
+//   }
 
    //You need to create more test cases for your Partitions if you need to 
    
    public void testIsValid()
    {
-	   //You can use this function for programming based testing
+	   UrlValidator urlValidator = new UrlValidator(scheme);
+
+	   for(int i = 0; i<scheme.length; i++) {
+		   for(int j=0; j<authority.length; j++) {
+			   for(int k=0; k<path.length; k++) {
+				   String testURL = scheme[i] + "://"+ authority[j] + path[k];
+				   if (urlValidator.isValid(testURL)) {
+					   System.out.printf("the url %s is valid\n", testURL);
+				   } else {
+					   System.out.printf("the url %s is invalid\n", testURL);
+				   }
+				   
+			   }
+		   }
+	   }
 
    }
    
