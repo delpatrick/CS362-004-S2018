@@ -20,30 +20,30 @@ public class UrlValidatorTest extends TestCase {
 
    
    
-//   public void testManualTest()
-//   {
-//	   String[] schemes = {"http","https","imap","ftp","ssh"};
-//	   String	urlStr;
-//	   
-//	   Scanner  userIn = new Scanner(System.in); 	   
-//	   UrlValidator urlValidator = new UrlValidator(schemes);
-//	   
-//	   while (true) {
-//		   urlStr = userIn.nextLine();
-//		   
-//		   if (urlStr == "")
-//			   break;
-//		   
-//		   if (urlValidator.isValid(urlStr)) {
-//			   System.out.println("url is valid");
-//		   } else {
-//			   System.out.println("url is invalid");
-//		   }   
-//	   }
-//	   System.out.println("Exiting Test");
-//	   userIn.close(); 
-//   }
-//   
+   public void testManualTest()
+   {
+	   String[] schemes = {"http","https","imap","ftp","ssh"};
+	   String	urlStr;
+	   
+	   Scanner  userIn = new Scanner(System.in); 	   
+	   UrlValidator urlValidator = new UrlValidator(schemes);
+	   
+	   while (true) {
+		   urlStr = userIn.nextLine();
+		   
+		   if (urlStr == "")
+			   break;
+		   
+		   if (urlValidator.isValid(urlStr)) {
+			   System.out.println("url is valid");
+		   } else {
+			   System.out.println("url is invalid");
+		   }   
+	   }
+	   System.out.println("Exiting Test");
+	   userIn.close(); 
+   }
+   
    
    public void testYourFirstPartition()
    {
