@@ -32,29 +32,31 @@ public class UrlValidatorTest extends TestCase {
 
    
    
-//   public void testManualTest()
-//   {
-//	   String[] schemes = {"http","https","imap","ftp","ssh"};
-//	   String	urlStr;
-//	   
-//	   Scanner  userIn = new Scanner(System.in); 	   
-//	   UrlValidator urlValidator = new UrlValidator(schemes);
-//	   
-//	   while (true) {
-//		   urlStr = userIn.nextLine();
-//		   
-//		   if (urlStr == "")
-//			   break;
-//		   
-//		   if (urlValidator.isValid(urlStr)) {
-//			   System.out.println("url is valid");
-//		   } else {
-//			   System.out.println("url is invalid");
-//		   }   
-//	   }
-//	   System.out.println("Exiting Test");
-//	   userIn.close(); 
-//   }
+   public void testManualTest()
+   {
+	   String[] schemes = {"http","https","imap","ftp","ssh"};
+	   String	urlStr;
+	   
+	   Scanner  userIn = new Scanner(System.in); 	   
+	   UrlValidator urlValidator = new UrlValidator(schemes);
+   
+	   System.out.println("Enter Url to test or 'exit' to quit...");
+	   
+	   while (true) {
+		   urlStr = userIn.nextLine();
+		   
+		   if (urlStr.equals("exit"))
+			   break;
+		   
+		   if (urlValidator.isValid(urlStr)) {
+			   System.out.println("url is valid");
+		   } else {
+			   System.out.println("url is invalid");
+		   }   
+	   }
+	   System.out.println("Exiting Test\n");
+	   userIn.close(); 
+   }
    
    
    public void testYourFirstPartition()
@@ -138,21 +140,28 @@ public class UrlValidatorTest extends TestCase {
    public void testIsValid()
    {
 	   UrlValidator urlValidator = new UrlValidator(scheme);
+	   String  		testURL;
 
 	   for(int i = 0; i<scheme.length; i++) {
 		   for(int j=0; j<authority.length; j++) {
 			   for(int k=0; k<path.length; k++) {
-				   String testURL = scheme[i] + "://"+ authority[j] + path[k];
+				   testURL = scheme[i] + "://"+ authority[j] + path[k];
 				   if (urlValidator.isValid(testURL)) {
 					   System.out.printf("the url %s is valid\n", testURL);
 				   } else {
 					   System.out.printf("the url %s is invalid\n", testURL);
 				   }
 				   
+				   //Add forward slash to separate authority and path 
+				   testURL = scheme[i] + "://"+ authority[j] + "/" + path[k];
+				   if (urlValidator.isValid(testURL)) {
+					   System.out.printf("the url %s is valid\n", testURL);
+				   } else {
+					   System.out.printf("the url %s is invalid\n", testURL);
+				   }
 			   }
 		   }
-	   }
-
+	   }	   
    }
 
 }
