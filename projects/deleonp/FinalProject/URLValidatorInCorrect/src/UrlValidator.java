@@ -363,7 +363,7 @@ public class UrlValidator implements Serializable {
             return false;
         }
 
-        if (isOff(ALLOW_ALL_SCHEMES) && !allowedSchemes.contains(scheme.toLowerCase(Locale.ENGLISH))) {
+        if (isOff(ALLOW_ALL_SCHEMES) && !allowedSchemes.contains(scheme.toUpperCase(Locale.ENGLISH))) {
             return false;
         }
 
