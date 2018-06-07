@@ -341,6 +341,10 @@ public class UrlValidator implements Serializable {
             return false;
         }
 
+        if (value.length() > 2083) {
+        	return false;
+        }
+        
         return true;
     }
 

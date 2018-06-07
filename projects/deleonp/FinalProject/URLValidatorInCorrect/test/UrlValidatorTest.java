@@ -1,15 +1,11 @@
 
-
+import java.util.Random;
 import java.util.Scanner;
 import junit.framework.TestCase;
 
 //You can use this as a skeleton for your 3 different test approach
 //It is an optional to use this file, you can generate your own test file(s) to test the target function!
 // Again, it is up to you to use this file or not!
-
-
-
-
 
 public class UrlValidatorTest extends TestCase {
 	
@@ -24,7 +20,11 @@ public class UrlValidatorTest extends TestCase {
 			"en/.wikipedia.org", "0wikipedia.org", "-wikipedia.org", "en.wiki pedia.org", 
 			"2001:db8:a0b:12f0::1", "2001:db8:0:0:0:0:2:1", "2001:db8::2:1"};
 	
-	String[] path = {"/test1", "/t123", "/$23", "/..", "/../", "/test1/", ""};
+	String[] path = {" ",null,"index.html","index html","index%20html","index+html",
+			"page?","page?search=new","page?search&new","page?search%20new","page?search+new", 
+			"page=","page=search=new","page=search&new","page=search%20new","page=search+new",
+			"page&","page&search=new","page&search&new","page&search%20new","page&search+new",
+			"/home/index.hmtl","home/index.html","home/dir1/index.html","home/dir1/dir2/index.html"};
 
    public UrlValidatorTest(String testName) {
       super(testName);
@@ -84,7 +84,56 @@ public class UrlValidatorTest extends TestCase {
 //
 //   }
 
-   //You need to create more test cases for your Partitions if you need to 
+   public void testYourThirdPartition() {
+	   UrlValidator urlValidator = new UrlValidator();
+	   
+	   String	testURL;
+	   int		maxLen = 2083; 
+	   int		startLen;
+	   Random 	ra = new Random();
+	   char		rchar;
+	   
+	   String[] authority3 = {"en.wikipedia.org", "wikipedia.org", "pmtpa.wikimedia.org", "0.wikipedia.org",
+				"192.0.2.235", "192.0.2.256", "255.255.255.255", "255.256.255.254",
+				"en.abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmno.org" };
+	   
+	   //Check Max length with different Authority values
+	   for (int i = 0; i < authority3.length; i++){
+		   testURL = "http://" + authority3[i] + "/";
+		   startLen = testURL.length();
+		   
+		   //fill in the rest of the max length with characters
+		   for (int k = 0; k < (maxLen - startLen); k++) {
+			   rchar = (char) (ra.nextInt(26) + 'a');
+			   testURL = testURL + Character.toString(rchar);
+		   }
+		   
+		   if (urlValidator.isValid(testURL)) {
+			   //System.out.printf("The url %s with length %d is valid\n", testURL, testURL.length());
+		   } else {
+			   System.out.printf("The url %s with length %d is invalid\n", testURL, testURL.length());
+		   }
+		   //add one more to go over max
+		   testURL = testURL + "a";
+		   if (urlValidator.isValid(testURL)) {
+			   //System.out.printf("The url %s with length %d is valid\n", testURL, testURL.length());
+		   } else {
+			   System.out.printf("The url %s with length %d is invalid\n", testURL, testURL.length());
+		   }
+	   }
+	   //Test Path array
+	   for (int i = 0; i < authority3.length; i++) {
+		   for (int k = 1; k < path.length; k++) {
+			   testURL = "http://" + authority3[i] + "/" + path[k];
+			   if (urlValidator.isValid(testURL)) {
+				   //System.out.printf("the url %s with path %s is valid\n", testURL, path[k]);
+			   } else {
+				   System.out.printf("the url %s with path %s is invalid\n", testURL, path[k]);
+			   }
+		   }		   
+	   }
+   }
+    
    
    public void testIsValid()
    {
@@ -105,7 +154,5 @@ public class UrlValidatorTest extends TestCase {
 	   }
 
    }
-   
-
 
 }
