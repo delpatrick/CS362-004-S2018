@@ -302,6 +302,11 @@ public class UrlValidator implements Serializable {
             return false;
         }
 
+        // Check the length of the whole url address
+        if (value.length() > 2083) {
+        	return false;
+        }
+        
         // Check the whole url address structure
         Matcher urlMatcher = URL_PATTERN.matcher(value);
         if (!urlMatcher.matches()) {
