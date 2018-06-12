@@ -55,12 +55,12 @@ public class UrlValidatorTest extends TestCase {
 			"2001:db8:a0b:12f0::1", "2001:db8::2:1"};
 	
 	String[] validPath= {"","index.html","index%20html","index+html",
-			"page?","page?search=new","page&search&new","page&search%20new","page&search+new",
+			"page?","page?search=new","page?search&new","page?search%20new","page?search+new", 
+			"page=","page=search=new","page=search&new","page=search%20new","page=search+new",
+			"page&","page&search=new","page&search&new","page&search%20new","page&search+new",
 			"home/index.hmtl","home/index.html","home/dir1/index.html","home/dir1/dir2/index.html"};
 	
-	String[] invalidPath = {" ", "index html","page?search&new","page?search%20new","page?search+new", 
-			"page=","page=search=new","page=search&new","page=search%20new","page=search+new",
-			"page&","page&search=new"};
+	String[] invalidPath = {" ", "index html"};
 	
 	
    public UrlValidatorTest(String testName) {
@@ -94,7 +94,16 @@ public class UrlValidatorTest extends TestCase {
 	   userIn.close(); 
    }
   
- 
+   /********************************************************
+    * testYourFirstPartition test
+    * 	Scheme Valid Testing 
+    * 	Test following cases
+    * Case 1) valid case testing
+    * Case 1-1) null scheme is allowed
+    * Case 1-2)case insensitive alpha + (alphanumeric or + or _ or .) + ://\n");
+    * 
+    * Case 2) invalid case testing
+    ********************************************************/ 
    public void testYourFirstPartition()
    {
 		   
@@ -108,8 +117,8 @@ public class UrlValidatorTest extends TestCase {
 		   }
 		   
 		   System.out.printf("\nValid Scheme Case 2) case insensitive alpha + (alphanumeric or + or _ or .) + ://\n");
-	   
-		   for(int i = 0; i < 10; i++) {
+		   System.out.printf("test with randomly created valid scheme\n"); 
+		   for(int i = 0; i < 100; i++) {
 			   String testURL = createRandScheme() + "en.wikipedia.org";
 			   // String testURL = "https://" + "www.google.com";
 		   
@@ -143,30 +152,61 @@ public class UrlValidatorTest extends TestCase {
 		   System.out.printf("\nEnd Of Partitioning Special Scheme Valid Testing\n\n");	      
 
    }
-  
-//   public void testYourSecondPartition(){
-//
-//	   String[] schemes = {"http","https","imap","ftp","ssh"};
-//
-//	   UrlValidator urlValidator = new UrlValidator(schemes);
-//
-//	   
-//	   for(int j = 1; j < scheme.length; j++) {
-//		   for(int i = 0; i < authority.length; i++) {
-//			   String testURL = scheme[j] + "://" + authority[i];
-//			   if (urlValidator.isValid(testURL)) {
-//				   System.out.printf("the url %s with authority %s is valid\n", testURL, authority[i]);
-//			   } else {
-//				   System.out.printf("the url %s with authority %s is invalid\n", testURL, authority[i]);
-//			   }
-//		   }
-//	   }
-//
-//
-//   }
+
+   /********************************************************
+    * testYourSecondPartition test 
+    * 	Authority Valid Testing
+    * 	Test following cases
+    * Case 1) valid case testing 
+    * Case 2) invalid case testing
+    ********************************************************/ 
+   public void testYourSecondPartition(){
+
+	   String[] schemes = {"http","https","imap","ftp","ssh"};
+
+	   UrlValidator urlValidator = new UrlValidator(schemes);
+	   
+	   int numTest = 0;
+	   int numFail = 0;
+ 	   System.out.printf("\nPartitioning Authority Valid Testing\n");
+ 	   System.out.printf("\nCase 1) valid case testing \n");
+   
+	   for(int j = 1; j < scheme.length; j++) {
+		   for(int i = 0; i < validAuthority.length; i++) {
+			   String testURL = scheme[j] + "://" + validAuthority[i];
+			   if (urlValidator.isValid(testURL)) {
+				   //System.out.printf("the url %s with authority %s is valid\n", testURL, authority[i]);
+			   } else {
+				   System.out.printf("failed. expected: valid, result: invalid\ntest url %s with authority %s is invalid\n", testURL, validAuthority[i]);
+				   numFail++;
+			   }
+			   numTest++;
+		   }
+	   }
+	   printResult(numTest, numFail);
+
+ 	   System.out.printf("\nCase 2) invalid case testing \n");
+	   for(int j = 1; j < scheme.length; j++) {
+		   for(int i = 0; i < invalidAuthority.length; i++) {
+			   String testURL = scheme[j] + "://" + invalidAuthority[i];
+			   if (urlValidator.isValid(testURL)) {
+				   System.out.printf("failed. expected: invalid, result: valid\ntest url %s with authority %s is valid\n", testURL, invalidAuthority[i]);
+				   numFail++;
+			   } 
+			   else {
+				  // System.out.printf("the url %s with authority %s is invalid\n", testURL, invalidAuthority[i]);
+			   }
+			   numTest++;
+		   }
+	   }
+	   printResult(numTest, numFail);
+
+	   System.out.printf("\nEnd Of Partitioning Authority Valid Testing\n\n");	   
+   }
 
    /********************************************************
     * testYourThirdPartition test 
+    *   Path Valid Testing
     * 	Test following cases
     * Case 1) the boundary testing to evaluate max length of url
     * Case 1-1)Expected URL is valid when total URL string length <= max length, 2083
